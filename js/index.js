@@ -29,7 +29,8 @@ function showBtn2() {
     */
 }
 function nextPage() {
-  window.location.href = "pages/page2.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/page2.html";
 }
 function countdown() {
   var timer = document.querySelector("#timer");
@@ -44,7 +45,8 @@ function countdown() {
   }, 1000);
 }
 function nextPage2() {
-  window.location.href = "pages/page3.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/page3.html";
 }
 function toright() {
   window.location.href = "https://health.udn.com/health/story/5978/6231442";
@@ -259,7 +261,8 @@ function controlGIFSize(event) {
 
 // 加上成功影片
 function successVideo() {
-  window.location.href = "/pages/successPage.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/successPage.html";
 }
 function showSuccessResult() {
   let successVideo = document.getElementById("successVideo");
@@ -298,10 +301,12 @@ function getMatrixWidth() {
 
 // 網址跳轉
 function toFinalFailPage() {
-  window.location.href = "/pages/finalfailure.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/finalfailure.html";
 }
 function toFinalSuccessPage() {
-  window.location.href = "/pages/finalsuccess.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/finalsuccess.html";
 }
 
 // 感覺有一天會用到
