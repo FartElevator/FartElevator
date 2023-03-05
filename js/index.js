@@ -93,25 +93,25 @@ function calculateBlowTime() {
   setTimeout(() => {
     // 切換成 nerves
     volume25 = volume;
-    gif.src = "../GIF/nerves.gif";
+    gif.src = "../gif/nerves.gif";
     controlGIFSize("nerves");
   }, 2500);
   setTimeout(() => {
     // 偵測成功or失敗
     console.log("4.5秒 現在聲量大小: " + volume);
     if (volume > volume25 && volume > 200) {
-      gif.src = "../GIF/sweating.gif";
+      gif.src = "../gif/sweating.gif";
       controlGIFSize("sweating");
     } else {
       failureFlag = true;
-      gif.src = "../GIF/evil.gif";
+      gif.src = "../gif/evil.gif";
       // 屁股人衝進電梯的控制
       controlGIFSize("evil");
     }
   }, 4500);
   setTimeout(() => {
     //  偵測成功
-    gif.src = "../GIf/dead.gif";
+    gif.src = "../gif/dead.gif";
     controlGIFSize("dead");
   }, 6500);
 }
@@ -236,7 +236,7 @@ function controlGIFSize(event) {
       console.log("controlGIFSize(使用者成功 屁屁死亡)");
       gif.style.width = "400px";
       if (failureFlag == true) {
-        gif.src = "../GIF/evil.gif";
+        gif.src = "../gif/evil.gif";
         // 衝進電梯
         figure.style.transform = `translate(-50%, ${40}%)`;
         setTimeout(() => {
@@ -274,7 +274,8 @@ function showSuccessResult() {
 
 // 加上失敗影片
 function failVideo() {
-  window.location.href = "/pages/failPage.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/failPage.html";
 }
 function showFailResult() {
   let playBtn = document.getElementById("playBtn");
