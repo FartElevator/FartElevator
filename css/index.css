@@ -96,7 +96,7 @@ body {
   position: absolute;
   left: 0;
   right: 0;
-  top: 38%;
+  top: 35%;
   bottom: 0;
   margin: auto;
 }
@@ -124,15 +124,15 @@ body {
 }
 
 p.enter {
-  color:#FDFDFD;
+  color: #fdfdfd;
   font-size: 2em;
-  font-family: 'Gabriela';
+  font-family: "Gabriela";
   position: absolute;
   text-align: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color:transparent;
+  background-color: transparent;
 }
 
 div.cirrcle {

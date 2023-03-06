@@ -98,8 +98,9 @@ function calculateBlowTime() {
   }, 2500);
   setTimeout(() => {
     // 偵測成功or失敗
+    console.log("2.5秒 之前聲量大小: " + volume25);
     console.log("4.5秒 現在聲量大小: " + volume);
-    if (volume > volume25 && volume > 200) {
+    if (volume > volume25 && volume > 100) {
       gif.src = "../gif/sweating.gif";
       controlGIFSize("sweating");
     } else {
