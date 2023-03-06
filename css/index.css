@@ -104,8 +104,8 @@ body {
   background-color: transparent;
   display: none;
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 10px;
+  right: 10px;
   top: 63%;
   bottom: 0;
   margin: auto;
