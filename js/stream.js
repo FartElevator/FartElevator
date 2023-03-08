@@ -1,6 +1,7 @@
 let vid2 = document.getElementById("myVideo2");
 let vid3 = document.getElementById("myVideo3");
 let startBtn = document.getElementsByClassName("button");
+let playBtn = document.getElementById("playBtn");
 let video2 = document.getElementsByClassName("video21");
 let video3 = document.getElementsByClassName("video3");
 let gifClass = document.getElementsByClassName("gifClass");
@@ -18,11 +19,12 @@ function getMedia() {
     video: false,
     audio: true,
   });
-  playV2();
+  // playV2();
 }
 
 // 開始播放V2
 function playV2() {
+  playBtn.style.display = "none";
   vid2.muted = false;
   console.log(vid2);
   vid2.play();

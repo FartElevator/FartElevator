@@ -71,7 +71,8 @@ function toleft() {
     "https://www.hpa.gov.tw/File/Attach/8668/File_8316.pdf";
 }
 function toindex() {
-  window.location.href = "../index.html";
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/inhale.html";
 }
 
 // page3
