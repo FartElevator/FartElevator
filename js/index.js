@@ -3,9 +3,11 @@ let startBtn = document.getElementsByClassName("button");
 let videoClass = document.getElementsByClassName("videoClass");
 let vid = document.getElementById("myVideo");
 let vid2 = document.getElementById("myVideo2");
+let vid3 = document.getElementById("myVideo3");
 let playBtn = document.getElementById("playBtn");
 let finalBtn = document.getElementsByClassName("button2");
 let video2 = document.getElementsByClassName("video2");
+let video3 = document.getElementsByClassName("video3");
 
 function startVideo() {
   videoClass[0].removeAttribute("hidden");
@@ -14,7 +16,20 @@ function startVideo() {
   vid.play();
 }
 
+function playVideo2() {
+  console.log("第一支影片播完");
+  // 問權限
+  getMedia();
+  videoClass[0].remove();
+  video2[0].style.display = "block";
+  vid2.muted = false;
+  vid2.play();
+  // debugger;
+}
+
 function showBtn() {
+  // 先顯示下一個影片
+  console.log("第二支影片播完");
   startBtn[0].style.display = "block";
   /*startBtn.removeAttribute("hidden");
     $("startBtn").css("display", "block");
@@ -59,13 +74,6 @@ function toindex() {
   window.location.href = "../index.html";
 }
 
-function playVideo2() {
-  videoClass[0].remove();
-  video2[0].style.display = "block";
-  vid2.muted = false;
-  vid2.play();
-}
-
 // page3
 let gif = document.getElementById("gif");
 let figure = document.getElementById("myFigure");
@@ -74,18 +82,32 @@ let volume25 = 0;
 let volume = 0;
 let tempFrequency = 0;
 let failureFlag = false;
+let userMedia;
+
 function getMedia() {
   console.log("click getMedia()");
-  navigator.mediaDevices
-    .getUserMedia({ video: false, audio: true })
-    .then((stream) => {
-      console.log(stream);
-      calculateBlowTime();
-      start_microphone(stream);
-    })
-    .catch((err) => {
-      console.error(`you got an error: ${err}`);
-    });
+  userMedia = navigator.mediaDevices.getUserMedia({
+    video: false,
+    audio: true,
+  });
+}
+function startBlow() {
+  video2[0].remove();
+  video3[0].style.display = "block";
+  vid3.muted = false;
+  vid3.play();
+  startBtn[0].setAttribute("hidden");
+  setTimeout(() => {
+    userMedia
+      .then((stream) => {
+        console.log("開始計算");
+        calculateBlowTime();
+        start_microphone(stream);
+      })
+      .catch((err) => {
+        console.error(`you got an error: ${err}`);
+      });
+  }, 5000);
 }
 
 // 計時吹氣時間
@@ -100,7 +122,7 @@ function calculateBlowTime() {
     // 偵測成功or失敗
     console.log("2.5秒 之前聲量大小: " + volume25);
     console.log("4.5秒 現在聲量大小: " + volume);
-    if (volume > volume25 && volume > 100) {
+    if (volume > 10) {
       gif.src = "../gif/sweating.gif";
       controlGIFSize("sweating");
     } else {
@@ -227,7 +249,8 @@ function controlGIFSize(event) {
   switch (event) {
     case "sweating":
       console.log("controlGIFSize(流汗)");
-      gif.style.width = "300px";
+      figure.style.transform = `translate(-50%, ${15}%)`;
+      gif.style.width = "400px";
       break;
     case "evil":
       console.log("controlGIFSize(失敗)");
@@ -235,18 +258,21 @@ function controlGIFSize(event) {
       break;
     case "dead":
       console.log("controlGIFSize(使用者成功 屁屁死亡)");
-      gif.style.width = "400px";
+      gif.style.width = "300px";
       if (failureFlag == true) {
         gif.src = "../gif/evil.gif";
         // 衝進電梯
         figure.style.transform = `translate(-50%, ${40}%)`;
         setTimeout(() => {
-          failVideo();
+          // failVideo();
         }, 1000);
       } else {
+        figure.style.transform = `translate(-50%, ${25}%)`;
+        gif.style.width = "400px";
         console.log("成功!");
+        //
         setTimeout(() => {
-          successVideo();
+          // successVideo();
         }, 1000);
         // for (let i = 1; i >= 0; ) {
         //   i -= 0.001;
@@ -259,7 +285,8 @@ function controlGIFSize(event) {
       console.log("controlGIFSize(dafault)");
   }
 }
-
+// 逐漸透明
+function transOpacity() {}
 // 加上成功影片
 function successVideo() {
   window.location.href =
