@@ -32,17 +32,49 @@
           id="myVideo"
           width="100%"
           max-height="auto"
-          onended=""
+          onended="playVideo2()"
           playsinline
         >
           <source src="finalVideo/V1.mp4" type="video/mp4" />
         </video>
-        <div class="cirrcle" id="playBtn" onclick="startV1()" type="button">
+        <div class="cirrcle" id="playBtn" onclick="startVideo()" type="button">
           <p class="enter">Open</p>
         </div>
+      </div>
+      <div class="video2" style="display: none">
+        <video
+          id="myVideo2"
+          width="100%"
+          max-height="auto"
+          onended="showBtn()"
+          playsinline
+        >
+          <source src="video/video2.mp4" type="video/mp4" />
+        </video>
+        <div class="button" width="100%">
+          <div id="startBtn" onclick="startBlow()" type="button">
+            <img
+              src="images/start_button.png"
+              width="270px"
+              height="auto"
+              background-color="transparent"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="video3" style="display: none">
+        <video
+          id="myVideo3"
+          width="100%"
+          max-height="auto"
+          onended=""
+          playsinline
+        >
+          <source src="video/opening3.mp4" type="video/mp4" />
+        </video>
       </div>
     </div>
   </body>
 </html>
 
-<script src="./js/homepage.js"></script>
+<script src="./js/index.js"></script>

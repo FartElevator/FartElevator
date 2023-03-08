@@ -1,88 +1,16 @@
-// index.html page dom
-let startBtn = document.getElementsByClassName("button");
-let videoClass = document.getElementsByClassName("videoClass");
-let vid = document.getElementById("myVideo");
 let vid2 = document.getElementById("myVideo2");
 let vid3 = document.getElementById("myVideo3");
-let playBtn = document.getElementById("playBtn");
-let finalBtn = document.getElementsByClassName("button2");
-let video2 = document.getElementsByClassName("video2");
+let startBtn = document.getElementsByClassName("button");
+let video2 = document.getElementsByClassName("video21");
 let video3 = document.getElementsByClassName("video3");
-
-function startVideo() {
-  videoClass[0].removeAttribute("hidden");
-  playBtn.setAttribute("hidden", "");
-  vid.muted = false;
-  vid.play();
-}
-
-function playVideo2() {
-  console.log("第一支影片播完");
-  // 問權限
-  getMedia();
-  videoClass[0].remove();
-  video2[0].style.display = "block";
-  vid2.muted = false;
-  vid2.play();
-  // debugger;
-}
-
-function showBtn() {
-  // 先顯示下一個影片
-  console.log("第二支影片播完");
-  startBtn[0].style.display = "block";
-  /*startBtn.removeAttribute("hidden");
-    $("startBtn").css("display", "block");
-     startBtn.style.display = "block";
-    */
-}
-function showBtn2() {
-  finalBtn[0].style.display = "block";
-  /*startBtn.removeAttribute("hidden");
-    $("startBtn").css("display", "block");
-     startBtn.style.display = "block";
-    */
-}
-function nextPage() {
-  window.location.href =
-    "https://fartelevator.github.io/FartElevator/pages/page2.html";
-}
-function countdown() {
-  var timer = document.querySelector("#timer");
-  var number = 3;
-  setInterval(function () {
-    number--;
-    if (number < 0) number = 0;
-    setTimeout(() => {
-      nextPage2();
-    }, 1000);
-    timer.innerText = number + 0;
-  }, 1000);
-}
-function nextPage2() {
-  window.location.href =
-    "https://fartelevator.github.io/FartElevator/pages/page3.html";
-}
-function toright() {
-  window.location.href = "https://health.udn.com/health/story/5978/6231442";
-}
-function toleft() {
-  window.location.href =
-    "https://www.hpa.gov.tw/File/Attach/8668/File_8316.pdf";
-}
-function toindex() {
-  window.location.href = "../index.html";
-}
-
-// page3
+let gifClass = document.getElementsByClassName("gifClass");
+// gif
 let gif = document.getElementById("gif");
 let figure = document.getElementById("myFigure");
-// 聲量 global var
+let userMedia;
 let volume25 = 0;
 let volume = 0;
-let tempFrequency = 0;
 let failureFlag = false;
-let userMedia;
 
 function getMedia() {
   console.log("click getMedia()");
@@ -90,13 +18,38 @@ function getMedia() {
     video: false,
     audio: true,
   });
+  playV2();
 }
-function startBlow() {
+
+// 開始播放V2
+function playV2() {
+  vid2.muted = false;
+  console.log(vid2);
+  vid2.play();
+  console.log("開始播放V2");
+}
+
+// 播放完V2 顯示 start Btn
+function showStartBtn() {
+  console.log("第二支影片播完");
+  startBtn[0].style.display = "block";
+}
+
+function playV3() {
+  // V2 startBtn 拿掉
   video2[0].remove();
   video3[0].style.display = "block";
   vid3.muted = false;
   vid3.play();
-  startBtn[0].setAttribute("hidden");
+}
+
+function showBlowDiv() {
+  video3[0].remove();
+  gifClass[0].style.display = "block";
+}
+function startBlow() {
+  playV3();
+  showBlowDiv();
   setTimeout(() => {
     userMedia
       .then((stream) => {
@@ -264,7 +217,7 @@ function controlGIFSize(event) {
         // 衝進電梯
         figure.style.transform = `translate(-50%, ${40}%)`;
         setTimeout(() => {
-          // failVideo();
+          failVideo();
         }, 1000);
       } else {
         figure.style.transform = `translate(-50%, ${25}%)`;
@@ -272,7 +225,7 @@ function controlGIFSize(event) {
         console.log("成功!");
         //
         setTimeout(() => {
-          // successVideo();
+          successVideo();
         }, 1000);
         // for (let i = 1; i >= 0; ) {
         //   i -= 0.001;
@@ -285,34 +238,6 @@ function controlGIFSize(event) {
       console.log("controlGIFSize(dafault)");
   }
 }
-// 逐漸透明
-function transOpacity() {}
-// 加上成功影片
-function successVideo() {
-  window.location.href =
-    "https://fartelevator.github.io/FartElevator/pages/successPage.html";
-}
-function showSuccessResult() {
-  let successVideo = document.getElementById("successVideo");
-  let playBtn = document.getElementById("playBtn");
-  playBtn.style.display = "none";
-  successVideo.muted = false;
-  successVideo.play();
-}
-
-// 加上失敗影片
-function failVideo() {
-  window.location.href =
-    "https://fartelevator.github.io/FartElevator/pages/failPage.html";
-}
-function showFailResult() {
-  let playBtn = document.getElementById("playBtn");
-  playBtn.style.display = "none";
-  let failureVideo = document.getElementById("failureVideo");
-  failureVideo.muted = false;
-  failureVideo.play();
-}
-
 // 取得dom 原始數值
 function getMatrixTransform() {
   //let matrix = new WebKitCSSMatrix();
@@ -338,25 +263,27 @@ function toFinalSuccessPage() {
     "https://fartelevator.github.io/FartElevator/pages/finalsuccess.html";
 }
 
-// 感覺有一天會用到
-function translate(elem, x, y) {
-  var left = parseInt(css(elem, "left"), 10),
-    top = parseInt(css(elem, "top"), 10),
-    dx = left - x,
-    dy = top - y,
-    i = 1,
-    count = 20,
-    delay = 20;
+function successVideo() {
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/successPage.html";
+}
+function showSuccessResult() {
+  let successVideo = document.getElementById("successVideo");
+  let playBtn = document.getElementById("playBtn");
+  playBtn.style.display = "none";
+  successVideo.muted = false;
+  successVideo.play();
+}
 
-  function loop() {
-    if (i >= count) {
-      return;
-    }
-    i += 1;
-    /*         elem.style.left = ( left - ( dx * i / count ) ).toFixed( 0 ) + 'px'; */
-    elem.style.top = (top - (dy * i) / count).toFixed(0) + "px";
-    setTimeout(loop, delay);
-  }
-
-  loop();
+// 加上失敗影片
+function failVideo() {
+  window.location.href =
+    "https://fartelevator.github.io/FartElevator/pages/failPage.html";
+}
+function showFailResult() {
+  let playBtn = document.getElementById("playBtn");
+  playBtn.style.display = "none";
+  let failureVideo = document.getElementById("failureVideo");
+  failureVideo.muted = false;
+  failureVideo.play();
 }
