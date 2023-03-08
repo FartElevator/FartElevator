@@ -62,7 +62,7 @@ function startBlow() {
       .catch((err) => {
         console.error(`you got an error: ${err}`);
       });
-  }, 5000);
+  }, 1000);
 }
 
 // 計時吹氣時間
