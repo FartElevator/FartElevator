@@ -65,6 +65,7 @@ body {
 /* buttons' css start */
 #startBtn {
   background-color: transparent;
+  text-align: center;
 }
 #leftbutton {
   background-color: transparent;
