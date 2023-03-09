@@ -192,7 +192,7 @@ img {
 /* blow time start */
 figure {
   margin: 0 0 1rem;
-  position: fixed;
+  position: absolute;
   left: 50%;
   bottom: 30px;
   transform: translate(-50%, 10%);
