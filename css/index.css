@@ -195,7 +195,7 @@ figure {
   position: absolute;
   left: 50%;
   bottom: 30px;
-  transform: translate(-50%, 10%);
+  transform: translate(-50%, 15%);
 }
 
 #gif {
