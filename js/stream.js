@@ -7,6 +7,7 @@ let video3 = document.getElementsByClassName("video3");
 let gifClass = document.getElementsByClassName("gifClass");
 // gif
 let gif = document.getElementById("gif");
+let blowPNG = document.getElementById("blowPNG");
 let figure = document.getElementById("myFigure");
 let userMedia;
 let volume25 = 0;
@@ -81,6 +82,7 @@ function calculateBlowTime() {
       gif.src = "../gif/sweating.gif";
       controlGIFSize("sweating");
     } else {
+      blowPNG.src = "../images/blow2.png";
       failureFlag = true;
       gif.src = "../gif/evil.gif";
       // 屁股人衝進電梯的控制
