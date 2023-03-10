@@ -20,7 +20,6 @@ function getMedia() {
     video: false,
     audio: true,
   });
-  // playV2();
 }
 
 // 開始播放V2
@@ -57,7 +56,7 @@ function startBlow() {
     userMedia
       .then((stream) => {
         console.log("開始計算");
-        calculateBlowTime();
+        controlTime();
         start_microphone(stream);
       })
       .catch((err) => {
@@ -65,6 +64,21 @@ function startBlow() {
       });
   }, 200);
 }
+
+// gif表情Object
+const GIF_OBJECT = {
+  blow: "../gif/commonFace/blow_cut.gif",
+  sweating: "../gif/successFace/sweating_cut.gif",
+  dead: "../gif/successFace/dead_cut.gif",
+  evil_1: "../gif/failFace/evil_1_cut.gif",
+  evil_2: "../gif/failFace/evil_2_cut.gif",
+};
+// Blow 文字匡Object
+const BLOW_OBJECT = {
+  blow_text_1: "../images/blow1.png",
+  blow_text_2: "../images/blow2.png",
+  blow_text_3: "../images/blow3.png",
+};
 
 let positionMap = {
   1: { Y: 10, W: 180 },
@@ -78,130 +92,131 @@ let nowPosNum = 2;
 let volume30;
 let volume50;
 
-// 計時吹氣時間
-function calculateBlowTime() {
-  console.log("getMatrixTransform() Y" + getMatrixTransform());
-  setTimeout(() => {
-    // 切換成 nerves
-    volume25 = volume;
-    console.log(volume);
-    if (volume > 180) {
-      controlGIFSize("blow", positionMap[1], "high", 2, 1);
-      gif.src = "../gif/blow.gif";
-      nowPosNum = 1;
-    } else {
-      console.log("positionMap.nowPosNum :" + nowPosNum);
-      controlGIFSize("blow", positionMap[3], "low", 2, 3);
-      gif.src = "../gif/blow.gif";
-      nowPosNum = 3;
-    }
-  }, 1500);
-  setTimeout(() => {
-    // 切換成 nerves
-    volume30 = volume;
-    let nextPosition;
-    if (volume30 > volume25) {
-      if (nowPosNum == 1) {
-        nextPosition = 2;
-      } else {
-        nextPosition = nowPosNum - 1;
-      }
-      console.log("now position number : " + nowPosNum);
-      console.log("next position number : " + nextPosition);
-      controlGIFSize(
-        "nerves",
-        positionMap[nextPosition],
-        "high",
-        nowPosNum,
-        nextPosition
-      );
-      gif.src = "../gif/nerves.gif";
-      nowPosNum = nextPosition;
-    } else {
-      if (nowPosNum == 1) {
-        nextPosition = 2;
-      } else {
-        nextPosition = nowPosNum - 1;
-      }
-      console.log("now position number : " + nowPosNum);
-      console.log("next position number : " + nextPosition);
-      controlGIFSize(
-        "nerves",
-        positionMap[nextPosition],
-        "low",
-        nowPosNum,
-        nextPosition
-      );
-      gif.src = "../gif/nerves.gif";
-      nowPosNum = nextPosition;
-    }
-  }, 3000);
-  setTimeout(() => {
-    volume50 = volume;
-    // 偵測成功or失敗
-    console.log("2.5秒 之前聲量大小: " + volume25);
-    console.log("4.5秒 現在聲量大小: " + volume);
-    let nextPosition;
-    if (volume > 100 && volume50 > volume30) {
-      if (nowPosNum == 1) {
-        nextPosition = 2;
-      } else {
-        nextPosition = nowPosNum - 1;
-      }
-      console.log("now position number : " + nowPosNum);
-      console.log("next position number : " + nextPosition);
-      controlGIFSize(
-        "sweating",
-        positionMap[nextPosition],
-        "high",
-        nowPosNum,
-        nextPosition
-      );
-      gif.src = "../gif/sweating.gif";
-      nowPosNum = nextPosition;
-    } else {
-      blowPNG.src = "../images/blow2.png";
-      failureFlag = true;
+// true = success , false = fail
+let gameFlag = null;
+// time interval for 每秒判斷聲量
+let countSec = 0;
+function countSecond() {
+  if (countSec < 7) {
+    // 判斷聲量 呼叫調整遠近、大小function
+    measureVolume();
+    countSec = countSec + 1;
+    setTimeout("countSecond()", 1000);
+  }
+}
 
-      // 屁股人衝進電梯的控制
-      if (nowPosNum == 1) {
-        nextPosition = 2;
-      } else {
-        nextPosition = nowPosNum - 1;
-      }
-      console.log("now position number : " + nowPosNum);
-      console.log("next position number : " + nextPosition);
-      controlGIFSize(
-        "evil",
-        positionMap[nextPosition],
-        "low",
-        nowPosNum,
-        nextPosition
-      );
-      gif.src = "../gif/evil.gif";
-      nowPosNum = nextPosition;
+// 判斷上一秒和下一秒聲量差距
+// 大於180就要往後變小
+// 小於180就要往前放大
+let moveNum = 10;
+let sizeNum = 10;
+function measureVolume() {
+  if (volume > 100) {
+    console.log("volume大於100: " + volume);
+    // call smoothly transform Y function
+    moveY(-moveNum);
+    // call smoothly change width function
+    changeSize(-sizeNum);
+  } else {
+    console.log("volume小於100: " + volume);
+    // call smoothly transform Y function
+    moveY(moveNum);
+    // call smoothly change width function
+    changeSize(sizeNum);
+  }
+}
+// 初始位置
+let lastY = -80;
+function moveY(newY) {
+  let delay = 20;
+  let y = 1;
+  function loopY() {
+    if (y > moveNum) {
+      return;
     }
-  }, 5000);
-  setTimeout(() => {
-    //  偵測成功
-
-    if (nowPosNum == 1) {
-      nextPosition = 2;
+    // 移動
+    if (newY < 0) {
+      figure.style.transform = `translate(-50%, ${lastY - y}%)`;
     } else {
-      nextPosition = nowPosNum - 1;
+      figure.style.transform = `translate(-50%, ${lastY + y}%)`;
     }
-    console.log("now position number : " + nowPosNum);
-    console.log("next position number : " + nextPosition);
-    controlGIFSize(
-      "dead",
-      positionMap[nextPosition],
-      "high",
-      nowPosNum,
-      nextPosition
-    );
-    gif.src = "../gif/dead.gif";
-    nowPosNum = nextPosition;
+    y += 1;
+    setTimeout(loopY, delay);
+  }
+  loopY();
+  lastY = newY + lastY;
+}
+let lastSize = 220;
+function changeSize(nextSize) {
+  let delay = 20;
+  let w = 1;
+  function loopW() {
+    if (w >= sizeNum) {
+      return;
+    }
+    if (nextSize < 0) {
+      gif.style.width = `${lastSize - w}px`;
+    } else {
+      gif.style.width = `${lastSize + w}px`;
+    }
+    w += 1;
+    // 放大縮小
+    setTimeout(loopW, delay);
+  }
+  loopW();
+  lastSize = lastSize + nextSize;
+}
+
+// 用時間控制:(1)遠近大小變化(2)表情變化
+function controlTime() {
+  // 偵測聲量大小
+  // 遠近大小變化
+  countSecond();
+  // 表情變化
+  setTimeout(() => {
+    gif.src = GIF_OBJECT.blow;
+    blowPNG.src = BLOW_OBJECT.blow_text_2;
+  }, 2700);
+  setTimeout(() => {
+    if (volume > 100) {
+      gameFlag = true;
+    } else {
+      gameFlag = false;
+    }
+    if (gameFlag == true) {
+      gif.src = GIF_OBJECT.sweating;
+    } else {
+      gif.src = GIF_OBJECT.evil_1;
+    }
+  }, 4700);
+  setTimeout(() => {
+    if (gameFlag == true) {
+      gif.src = GIF_OBJECT.dead;
+    } else {
+      gif.src = GIF_OBJECT.evil_2;
+      blowPNG.src = BLOW_OBJECT.blow_text_3;
+    }
+  }, 6700);
+  setTimeout(() => {
+    if (gameFlag == true) {
+      // 最後成功 跑到最遠
+      figure.style.transform = `translate(-50%, ${-150}%)`;
+      gif.style.width = "180px";
+    } else {
+      // 最後失敗 衝進電梯
+      figure.style.transform = `translate(-50%, ${-5}%)`;
+      gif.style.width = "300px";
+    }
   }, 7000);
+  setTimeout(() => {
+    if (gameFlag == true) {
+      // 最後成功 跑到最遠
+      successVideo();
+    } else {
+      // 最後失敗 衝進電梯
+      failVideo();
+    }
+  }, 8500);
 }
 
 function show_some_data(given_typed_array, num_row_to_display, label) {
@@ -305,177 +320,6 @@ function start_microphone(stream) {
       show_some_data(array_time_domain, 5, "time"); // store this to record to aggregate buffer/file
     }
   };
-}
-
-// control DOM - v2
-
-function controlGIFSize(event, nextPosition, size, lastYPosNum, nextTPosNum) {
-  let originalSize = getMatrixWidth;
-  switch (event) {
-    case "blow":
-      console.log("controlGIFSize(blow)");
-      if (size === "high" && lastYPosNum != nextPosition) {
-        smoothlyTranslation(getMatrixWidth(), -nextPosition.Y, nextPosition.W);
-      } else {
-        smoothlyTranslation(getMatrixWidth(), nextPosition.Y, nextPosition.W);
-      }
-      break;
-    case "nerves":
-      console.log("controlGIFSize(nerves)");
-      if (size === "high" && lastYPosNum != nextPosition) {
-        smoothlyTranslation(getMatrixWidth(), -nextPosition.Y, nextPosition.W);
-      } else {
-        smoothlyTranslation(getMatrixWidth(), nextPosition.Y, nextPosition.W);
-      }
-      break;
-    case "sweating":
-      console.log("controlGIFSize(流汗)");
-      if (size === "high" && lastYPosNum != nextPosition) {
-        smoothlyTranslation(getMatrixWidth(), -nextPosition.Y, nextPosition.W);
-      } else {
-        smoothlyTranslation(getMatrixWidth(), nextPosition.Y, nextPosition.W);
-      }
-      break;
-    case "evil":
-      console.log("controlGIFSize(失敗)");
-      if (size === "high" && lastYPosNum != nextPosition) {
-        smoothlyTranslation(getMatrixWidth(), -nextPosition.Y, nextPosition.W);
-      } else {
-        smoothlyTranslation(getMatrixWidth(), nextPosition.Y, nextPosition.W);
-      }
-      break;
-    case "dead":
-      console.log("controlGIFSize(使用者成功 屁屁死亡)");
-      if (failureFlag == true) {
-        gif.src = "../gif/evil.gif";
-        // 衝進電梯
-        if (size === "high" && lastYPosNum != nextPosition) {
-          smoothlyTranslation(
-            getMatrixWidth(),
-            -nextPosition.Y,
-            nextPosition.W
-          );
-        } else {
-          smoothlyTranslation(getMatrixWidth(), nextPosition.Y, nextPosition.W);
-        }
-        setTimeout(() => {
-          failVideo();
-        }, 1000);
-      } else {
-        if (size === "high" && lastYPosNum != nextPosition) {
-          smoothlyTranslation(
-            getMatrixWidth(),
-            -nextPosition.Y,
-            nextPosition.W
-          );
-        } else {
-          smoothlyTranslation(getMatrixWidth(), nextPosition.Y, nextPosition.W);
-        }
-        console.log("成功!");
-        //
-        setTimeout(() => {
-          successVideo();
-        }, 1000);
-        // for (let i = 1; i >= 0; ) {
-        //   i -= 0.001;
-        //   gif.style.opacity = `${i}`;
-        // }
-      }
-
-      break;
-    default:
-      console.log("controlGIFSize(dafault)");
-  }
-}
-// 取得dom 原始數值
-function getMatrixTransform() {
-  //let matrix = new WebKitCSSMatrix();
-  let transformValue = window.getComputedStyle(figure).transform;
-  let w = window.getComputedStyle(figure).width;
-  var matrix = new WebKitCSSMatrix(transformValue);
-  let originalTransform = (matrix.m42 / parseInt(w)) * 100;
-  return originalTransform;
-}
-function getMatrixWidth() {
-  //let matrix = new WebKitCSSMatrix();
-  let w = window.getComputedStyle(figure).width;
-  let returnW = parseInt(w.replace("px", ""));
-  return returnW;
-}
-// smoothly移動gif
-function translateOld(elem, x, y) {
-  var left = parseInt(css(elem, "left"), 10),
-    top = parseInt(css(elem, "top"), 10),
-    dx = left - x,
-    dy = top - y,
-    i = 1,
-    count = 20,
-    delay = 20;
-
-  function loop() {
-    if (i >= count) {
-      return;
-    }
-    i += 1;
-    /*         elem.style.left = ( left - ( dx * i / count ) ).toFixed( 0 ) + 'px'; */
-    elem.style.top = (top - (dy * i) / count).toFixed(0) + "px";
-    setTimeout(loop, delay);
-  }
-
-  loop();
-}
-
-let lastY = null;
-function smoothlyTranslation(originalW, newY, newW) {
-  if (lastY == null) {
-    lastY = 1;
-  } else {
-    lastY = lastY + newY;
-  }
-  console.log("smoothlyTranslation : " + newY);
-  let delay = 30;
-  let moveTimesY = Math.abs(newY);
-  let moveTimesW = Math.abs(newW - originalW);
-  let y = 1;
-  let w = 1;
-  function loopY() {
-    if (y >= 10) {
-      return;
-    }
-    y += 1;
-    // 移動
-
-    if (newY < 0) {
-      console.log("originalY - y  : " + `${-y + lastY}`);
-      figure.style.transform = `translate(-50%, ${-y + lastY}%)`;
-    } else {
-      console.log("originalY - y  : " + `${y}`);
-      figure.style.transform = `translate(-50%, ${y + lastY}%)`;
-    }
-    setTimeout(loopY, delay);
-  }
-
-  function loopW() {
-    if (w >= moveTimesW) {
-      return;
-    }
-    w += 1;
-    if (originalW > newW) {
-      console.log("originalW - w  : " + `${originalW - w}`);
-      gif.style.width = `${originalW - w}px`;
-    } else {
-      console.log("originalW + w  : " + `${originalW + w}`);
-      gif.style.width = `${originalW + w}px`;
-    }
-    // 放大縮小
-    setTimeout(loopW, delay);
-  }
-  // loopW();
-  loopY();
-}
-
-function mapFn(value, in_min, in_max, out_min, out_max) {
-  return ((value - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
 }
 
 // 網址跳轉
