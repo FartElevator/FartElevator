@@ -69,7 +69,7 @@ function startBlow() {
 const GIF_OBJECT = {
   blow: "../gif/commonFace/blow.gif",
   sweating: "../gif/successFace/sweating_cut.gif",
-  dead: "../gif/successFace/dead_cut.gif",
+  dead: "../gif/successFace/dead_test.gif",
   evil_1: "../gif/failFace/evil_1_cut.gif",
   evil_2: "../gif/failFace/evil_2_cut.gif",
 };
@@ -205,14 +205,16 @@ function controlTime() {
   setTimeout(() => {
     if (gameFlag == true) {
       // 最後成功 跑到最遠
-      // moveY(-10);
-      // changeSize(-10);
+      moveY(-10);
+      changeSize(-10);
       // figure.style.transform = `translate(-50%, ${lastY-10}%)`;
       // gif.style.width = "180px";
     } else {
       // 最後失敗 衝進電梯
-      // moveY(10);
-      // changeSize(10);
+      let lastValue = -lastY;
+
+      moveY(lastValue);
+      changeSize(lastValue);
       // figure.style.transform = `translate(-50%, ${-5}%)`;
       // gif.style.width = "300px";
     }
