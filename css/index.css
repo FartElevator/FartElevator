@@ -195,11 +195,11 @@ figure {
   position: absolute;
   left: 50%;
   bottom: 30px;
-  transform: translate(-50%, 15%);
+  transform: translate(-50%, -80%);
 }
 
 #gif {
-  width: 400px;
+  width: 220px;
 }
 
 /* blow time end */
