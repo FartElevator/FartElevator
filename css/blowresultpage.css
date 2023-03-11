@@ -60,6 +60,7 @@ p.enter {
   padding-left: 71px;
   padding-right: 61px;
   background-color: transparent;
+  white-space: nowrap;
 }
 
 div.cirrcle {

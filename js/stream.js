@@ -179,7 +179,7 @@ function controlTime() {
   }, 2700);
   setTimeout(() => {
     console.log("volume : " + volume);
-    if (volume >= 180) {
+    if (volume >= 140) {
       gameFlag = true;
     } else {
       gameFlag = false;
