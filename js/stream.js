@@ -67,7 +67,7 @@ function startBlow() {
 
 // gif表情Object
 const GIF_OBJECT = {
-  blow: "../gif/commonFace/blow_cut.gif",
+  blow: "../gif/commonFace/blow.gif",
   sweating: "../gif/successFace/sweating_cut.gif",
   dead: "../gif/successFace/dead_cut.gif",
   evil_1: "../gif/failFace/evil_1_cut.gif",
@@ -178,12 +178,15 @@ function controlTime() {
     blowPNG.src = BLOW_OBJECT.blow_text_2;
   }, 2700);
   setTimeout(() => {
-    if (volume > 100) {
+    console.log("volume : " + volume);
+    if (volume >= 180) {
       gameFlag = true;
     } else {
       gameFlag = false;
     }
     if (gameFlag == true) {
+      sizeNum = 15;
+      moveNum = 15;
       gif.src = GIF_OBJECT.sweating;
     } else {
       gif.src = GIF_OBJECT.evil_1;
@@ -191,23 +194,29 @@ function controlTime() {
   }, 4700);
   setTimeout(() => {
     if (gameFlag == true) {
+      sizeNum = 10;
+      moveNum = 18;
       gif.src = GIF_OBJECT.dead;
     } else {
       gif.src = GIF_OBJECT.evil_2;
       blowPNG.src = BLOW_OBJECT.blow_text_3;
     }
-  }, 6700);
+  }, 6700); // 6700
   setTimeout(() => {
     if (gameFlag == true) {
       // 最後成功 跑到最遠
-      figure.style.transform = `translate(-50%, ${-150}%)`;
-      gif.style.width = "180px";
+      // moveY(-10);
+      // changeSize(-10);
+      // figure.style.transform = `translate(-50%, ${lastY-10}%)`;
+      // gif.style.width = "180px";
     } else {
       // 最後失敗 衝進電梯
-      figure.style.transform = `translate(-50%, ${-5}%)`;
-      gif.style.width = "300px";
+      // moveY(10);
+      // changeSize(10);
+      // figure.style.transform = `translate(-50%, ${-5}%)`;
+      // gif.style.width = "300px";
     }
-  }, 7000);
+  }, 7200); //7200
   setTimeout(() => {
     if (gameFlag == true) {
       // 最後成功 跑到最遠
@@ -216,7 +225,7 @@ function controlTime() {
       // 最後失敗 衝進電梯
       failVideo();
     }
-  }, 8500);
+  }, 8000);
 }
 
 function show_some_data(given_typed_array, num_row_to_display, label) {
